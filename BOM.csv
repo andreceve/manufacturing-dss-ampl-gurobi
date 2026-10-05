@@ -1,0 +1,25 @@
+AssemblyID,ComponentID,nProdComp,UoM,BOM_Level,Notes,%FinalProduct
+"Brake","BrakeDisc",2,"Unit",1,,1
+"Brake","Grip",2,"Unit",1,,1
+"Brake","Nuts",18,"Unit",1,,1
+"Brake","Billet",1.5,"m",2,,0.7
+"Brake","BrakeBox",1,"Unit",1,,1
+"Clutch","PreassurePlate",1,"Unit",1,,1
+"Clutch","Bearing",2,"Unit",1,,1
+"Clutch","ClutchCover",1,"Unit",1,,1
+"Clutch","ClutchDisc",2,"Unit",1,,1
+"Clutch","ClutchBox",4,"Unit",1,,1
+"Clutch","Sheet",0.4,"sqm",2,,0.85
+"Piston","PistonCase",1,"Unit",1,,1
+"Piston","Head",2,"Unit",1,,1
+"Piston","ConnectingRod",1,"Unit",1,,1
+"Piston","Seal",3,"Unit",1,"Each Piston needs 3 seals",1
+"Shaft","ShaftRaw",1,"Unit",1,,1
+"Shaft","ShaftCase",3,"Unit",1,,1
+"Shaft","Nuts",20,"Unit",1,,1
+"Wheel","Nuts",12,"Unit",1,,1
+"Wheel","WheelMaterial",4,"Unit",1,,1
+"Wheel","WheelContainer",1,"Unit",1,,1
+"Shift","Nuts",30,"Unit",1,,1
+"Shift","ShiftRaw",2,"Unit",1,,1
+"Shift","ShiftCase",3,"Unit",1,,1

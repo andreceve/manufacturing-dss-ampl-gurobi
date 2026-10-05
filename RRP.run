@@ -1,0 +1,51 @@
+reset;
+model RRP.mod;
+
+
+table tbl_Calendar IN 'odbc' "Database.accdb" "SQL=SELECT Day, Period, Lavorativo FROM Calendar WHERE Period IN (1, 2, 3,4,5,6,7,8,9,10,11,12)":
+    CALENDAR <- [Day, Period], Lavorativo;
+read table tbl_Calendar;
+
+table Product IN 'odbc' "Database.accdb" "Product":
+    PRODUCTS <- [ProductID], Revenue, Handling, ManualAssembly, OrdQ;
+read table Product;
+
+table Machines IN 'odbc' "Database.accdb" "Machines":
+    MACHINES <- [NameMac], CapitalCost, Lifespan, ProductionCost, DeltaTj, Shift_Day;
+read table Machines;
+
+table ProdMach IN 'odbc' "Database.accdb" "ProdMach":
+    PRODMACH <- [ProductID, NameMac], ProcTime, SetupTime;
+read table ProdMach;
+
+table OrdProd IN 'odbc' "Database.accdb" "SQL=SELECT ProductID, Period, DemandProfile FROM OrdProd WHERE Period IN (1, 2, 3,4,5,6,7,8,9,10,11,12)":
+    ORDPROD <- [ProductID, Period], DemandProfile;
+read table OrdProd;
+
+
+# Labour parameters
+let wt := 0;                   #I have 0 seasonal workers at the beginning
+let wc := 20*8*Horizon_Days;   #Each seasonal worker costs me €20 gross per hour. Each worker works 8 hours a day for the entire Planning horizon (261 days)
+
+# SOLUTION
+
+option solver gurobi;
+solve;
+
+display Period_Days;
+display Horizon_Days; 
+display Production_Profit;
+display MachQuantity;
+display Accepted;
+display sw; #visualization of the hired workers
+# display (wc * sw); #visualization of how much these workers that we hire cost me
+
+
+# WRITING OF RESULTS
+table OrdProd_Out 'odbc' "Database.accdb" "ORDPROD":
+    [ProductID, Period], Accepted;
+write table OrdProd_Out;
+
+table Machines_Out 'odbc' "Database.accdb" "Machines":
+    [NameMac], MachQuantity;
+write table Machines_Out;

@@ -1,0 +1,7 @@
+ProductID,BoM_Levels,Description,ProductionMix,UnitProdWeight,UoM,Demand,Revenue,ManualAssembly,Handling,UnitProdCost,HoldingCost,SetupCost,InitInv,MaxBatchCap,MinBatchProd,OrdQ,BatchCost,LTPP
+"Brake",2,,"Automotive",8,"kg/unit",12000,250,10,20,2.71,4.8,11.85,1500,100,50,86,50,1
+"Clutch",2,,"Automotive",10,"kg/unit",5600,300,27,5,6.82,6,15.29,1000,80,40,36,60,1
+"Piston",1,,"Automotive",12,"kg/unit",7400,100,45,8,5.39,7.199999999999999,6.52,1200,90,50,54,90,1
+"Shaft",1,,"Automotive",8,"kg/unit",8000,240,60,16,9.85,4.8,9.300000000000001,600,90,50,59,70,1
+"Wheel",1,,"Automotive",16,"kg/unit",10000,385,34,18,4.109999999999999,9.6,15.36,800,80,50,72,120,1
+"Shift",1,,"Automotive",7,"kg/unit",6000,500,125,24,3.62,4.2,20.88,600,60,20,42,20,0

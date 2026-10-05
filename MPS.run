@@ -1,0 +1,55 @@
+reset;
+model MPS.mod;
+
+
+#1. Import products and the costs computed by Costs.mod
+table tbl_Product IN 'odbc' "Database.accdb" "Product":
+    PRODUCTS <- [ProductID], UnitProdCost, HoldingCost, SetupCost, MaxBatchCap, MinBatchProd, InitInv, OrdQ, BatchCost, LTPP;
+read table tbl_Product;
+
+#2. Import the demand ACCEPTED by the RRP model and fill the set PERIODS
+# SELECT DISTINCT takes each period number only once
+table tbl_Periods IN 'odbc' "Database.accdb" "SQL=SELECT DISTINCT Period FROM OrdProd WHERE Accepted = 1":
+    PERIODS <- [Period];
+read table tbl_Periods;
+
+#3. Load the DEMAND indexed by product and period
+table tbl_Demand IN 'odbc' "Database.accdb" "SQL=SELECT ProductID, Period, (DemandProfile * Accepted) AS RealDemand FROM OrdProd WHERE Accepted = 1":
+    [ProductID, Period], RealDemand;
+read table tbl_Demand;
+
+#4. Load the CALENDAR for the production capacity
+table tbl_Calendar IN 'odbc' "Database.accdb" "Calendar":
+    CALENDAR <- [Day, Period], Lavorativo;
+read table tbl_Calendar;
+
+#5. Import the machine configuration decided by the RRP
+table tbl_Machines IN 'odbc' "Database.accdb" "Machines":
+    MACHINES <- [NameMac], MachQuantity, Shift_Day, DeltaTj;
+read table tbl_Machines;
+
+#6. Load ProcTime and SetupTime of the routing
+table tbl_ProdMach IN 'odbc' "Database.accdb" "ProdMach":
+    PRODMACH <- [ProductID, NameMac], ProcTime, SetupTime; 
+read table tbl_ProdMach;
+
+#SOLUTION
+
+option solver gurobi;
+solve;
+display Total_MPS_Cost;
+display RealDemand;
+display OrdQ;
+display X;
+display S;
+display RO;   # Released batches
+display SPO;  # Completed batches
+#display ProcTime;
+#display SetupTime;
+#display LTPP; #monthly lead times: a batch released at the beginning of a month is completed at the end of the month, except for the Shift, whose lead time is set to zero in Access,
+               #so a Shift order released at the beginning of a month is produced within the same month.
+
+
+# DATA EXPORT
+table MPS_Plan_Out OUT 'odbc' "Database.accdb" "MPS_Table": [ProductID, Period], X, S, RO, SPO;
+write table MPS_Plan_Out;

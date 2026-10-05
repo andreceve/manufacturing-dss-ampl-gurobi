@@ -1,0 +1,30 @@
+reset;
+model Costs.mod;
+
+#DATA IMPORT
+table tbl_Product IN 'odbc' "Database.accdb" "Product":
+    PRODUCTS <- [ProductID], UnitProdWeight;
+read table tbl_Product;
+
+table tbl_Machines IN 'odbc' "Database.accdb" "Machines":
+    MACHINES <- [NameMac], ProductionCost;
+read table tbl_Machines;
+
+table tbl_ProdMach IN 'odbc' "Database.accdb" "ProdMach":
+    PRODMACH <- [ProductID, NameMac], ProcTime, SetupTime;
+read table tbl_ProdMach;
+
+#ASSIGNMENT OF THE RESULTS
+let {p in PRODUCTS} UnitProdCost[p] := Calc_UnitProdCost[p];
+let {p in PRODUCTS} HoldingCost[p]  := Calc_HoldingCost[p];
+let {p in PRODUCTS} SetupCost[p]    := Calc_SetupCost[p];
+
+
+display UnitProdCost;
+display HoldingCost;
+display SetupCost;
+
+#WRITING TO THE DATABASE
+table tbl_Product_Out 'odbc' "Database.accdb" "Product":
+    [ProductID], UnitProdCost, HoldingCost, SetupCost;
+write table tbl_Product_Out;

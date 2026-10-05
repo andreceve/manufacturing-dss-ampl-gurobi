@@ -1,0 +1,6 @@
+# Access lock files and AMPL/solver outputs
+*.laccdb
+*.ldb
+*.sol
+*.log
+~$*

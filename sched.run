@@ -1,0 +1,28 @@
+reset;
+model sched.mod;
+
+#1. Data loading
+table tbl_Product IN 'odbc' "Database.accdb" "Product":
+    PRODUCTS <- [ProductID], Handling;
+read table tbl_Product;
+
+table tbl_Machines IN 'odbc' "Database.accdb" "Machines":
+    MACHINES <- [NameMac], MachQuantity;
+read table tbl_Machines;
+
+table tbl_ProdMach IN 'odbc' "Database.accdb" "ProdMach":
+    PRODMACH <- [ProductID, NameMac], Precedente, ProcTime, SetupTime;
+read table tbl_ProdMach;
+
+table tbl_Jobs IN 'odbc' "Database.accdb" "Jobs":
+    JOBS <- [ProductID, LotN], Quantity;
+read table tbl_Jobs;
+
+#2. Solution
+option solver gurobi;
+solve;
+
+#3. Output
+display Makespan;
+display StartTime;
+display Alloc; #it displays the allocation of each batch to the respective copy of the machines that we have in the rrp
